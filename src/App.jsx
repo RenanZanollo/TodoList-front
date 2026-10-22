@@ -29,11 +29,29 @@ function App() {
     setTarefas((prev) => [...prev, novaTarefa]);
   };
 
+  const updateTarefa = async(id) => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/tarefa/${id}`,{
+        method:"PATCH",
+      })
+
+      const data = await res.json()
+
+      console.log(res)
+      if(!res.ok) {
+        throw new Error(data.message)
+      }
+      setTarefas((prev) => prev.map((t) => (t.id === id ? data.tarefa : t)))
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <>
       <Input onAdicionar={adicionarTarefa} />
       <div className="flex justify-center">
-      <TarefaList tarefas={tarefas} />
+      <TarefaList tarefas={tarefas} updateTarefa={updateTarefa} />
       </div>
     </>
   );

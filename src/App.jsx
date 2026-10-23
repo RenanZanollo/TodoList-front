@@ -4,6 +4,7 @@ import TarefaList from "./components/TarefaList.jsx";
 
 function App() {
   const [tarefas, setTarefas] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -29,29 +30,54 @@ function App() {
     setTarefas((prev) => [...prev, novaTarefa]);
   };
 
-  const updateTarefa = async(id) => {
+  const updateTarefa = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/tarefa/${id}`,{
-        method:"PATCH",
-      })
+      const res = await fetch(`http://localhost:3000/api/tarefa/${id}`, {
+        method: "PATCH",
+      });
 
-      const data = await res.json()
+      const data = await res.json();
 
-      console.log(res)
-      if(!res.ok) {
-        throw new Error(data.message)
+      console.log(res);
+      if (!res.ok) {
+        throw new Error(data.message);
       }
-      setTarefas((prev) => prev.map((t) => (t.id === id ? data.tarefa : t)))
+      setTarefas((prev) => prev.map((t) => (t.id === id ? data.tarefa : t)));
     } catch (error) {
       console.error(error);
     }
-  }
+  };
+
+  const deleteTarefa = async (id) => {
+    try {
+      setLoading(true);
+
+      const res = await fetch(`http://localhost:3000/api/tarefa/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res) {
+        const data = await res.json();
+        throw new Error(data.message);
+      }
+
+      setTarefas((prev) => prev.filter((t) => t.id !== id));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
       <Input onAdicionar={adicionarTarefa} />
       <div className="flex justify-center">
-      <TarefaList tarefas={tarefas} updateTarefa={updateTarefa} />
+        <TarefaList
+          tarefas={tarefas}
+          updateTarefa={updateTarefa}
+          deleteTarefa={deleteTarefa}
+        />
       </div>
     </>
   );

@@ -1,4 +1,6 @@
-const TarefaList = ({ tarefas, updateTarefa }) => {
+import ButtonCard from "./buttons/ButtonCard";
+
+const TarefaList = ({ tarefas, updateTarefa, deleteTarefa }) => {
   console.log(tarefas);
   return (
     <div className="p-4">
@@ -11,7 +13,8 @@ const TarefaList = ({ tarefas, updateTarefa }) => {
             {t.isComplete ? "Completo" : "Em progresso"}
           </div>
           </div>
-          <button onClick={() => updateTarefa(t.id)} className="border p-4 rounded-lg cursor-pointer ml-2"> Finalizar </button>
+          <ButtonCard variant="edit"   onClick={() => updateTarefa(t.id)} />
+          <ButtonCard variant="delete" onClick={() => deleteTarefa(t.id)} />
           </div>
           )})}
     </div>

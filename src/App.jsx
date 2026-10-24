@@ -56,7 +56,7 @@ function App() {
         method: "DELETE",
       });
 
-      if (!res) {
+      if (!res.ok) {
         const data = await res.json();
         throw new Error(data.message);
       }

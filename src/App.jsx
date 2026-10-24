@@ -30,10 +30,12 @@ function App() {
     setTarefas((prev) => [...prev, novaTarefa]);
   };
 
-  const updateTarefa = async (id) => {
+  const updateTarefa = async (id, isComplete) => {
     try {
       const res = await fetch(`http://localhost:3000/api/tarefa/${id}`, {
         method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isComplete }),
       });
 
       const data = await res.json();
@@ -70,7 +72,23 @@ function App() {
   };
 
   return (
-    <>
+    <div className="w-full h-full bg-[#1A251E]">
+      <h1 className="text-center font-fredericka text-[#FFFFFF] text-5xl pt-12 ">
+        Minhas Tarefas
+      </h1>
+      <div class="w-full max-w-xs mx-auto text-white">
+        <svg
+          viewBox="0 0 100 10"
+          class="w-full h-auto stroke-current"
+          fill="none"
+          stroke-width="0.4"
+        >
+          <path d="M 0 5 Q 25 1, 50 5 T 100 5" />
+        </svg>
+      </div>
+      <p className="font-caveat text-center text-[#F3BC8B] mt-4">
+        o que fazer hoje?
+      </p>
       <Input onAdicionar={adicionarTarefa} />
       <div className="flex justify-center">
         <TarefaList
@@ -79,7 +97,7 @@ function App() {
           deleteTarefa={deleteTarefa}
         />
       </div>
-    </>
+    </div>
   );
 }
 

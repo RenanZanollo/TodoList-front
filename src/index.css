@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@theme {
+  --font-caveat: "Caveat", cursive;
+  --font-fredericka: "Fredericka the Great", cursive;
+  --font-roboto: "Roboto", sans-serif;
+}
